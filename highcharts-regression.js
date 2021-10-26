@@ -1,3 +1,4 @@
+/* global define Highcharts series */
 (function(factory) {
 	"use strict";
 
@@ -19,7 +20,7 @@
 		}
     }
 }(function (H) {
-    var processSerie = function (s, method, chart) {
+    var processSerie = function (s) {
         if (s.regression && !s.rendered) {
             s.regressionSettings = s.regressionSettings || {};
             s.regressionSettings.tooltip = s.regressionSettings.tooltip || {};
@@ -61,29 +62,29 @@
             var mergedData = s.data;
             if (s.regressionSettings.useAllSeries) {
                 mergedData = [];
-                for (di = 0; di < series.length; di++) {
+                for (let di = 0; di < series.length; di++) {
                     var seriesToMerge = series[di];
                     mergedData = mergedData.concat(seriesToMerge.data);
                 }
             }
 
             if (regressionType == "linear") {
-                var extrapolate = s.regressionSettings.extrapolate || 0;
+                let extrapolate = s.regressionSettings.extrapolate || 0;
                 regression = _linear(mergedData, s.regressionSettings.decimalPlaces, extrapolate);
                 extraSerie.type = "line";
             } else if (regressionType == "exponential") {
-                var extrapolate = s.regressionSettings.extrapolate || 0;
+                let extrapolate = s.regressionSettings.extrapolate || 0;
                 regression = _exponential(mergedData, extrapolate);
             }
             else if (regressionType == "polynomial") {
                 var order = s.regressionSettings.order || 2;
-                var extrapolate = s.regressionSettings.extrapolate || 0;
+                let extrapolate = s.regressionSettings.extrapolate || 0;
                 regression = _polynomial(mergedData, order, extrapolate);
             } else if (regressionType == "power") {
-                var extrapolate = s.regressionSettings.extrapolate || 0;
+                let extrapolate = s.regressionSettings.extrapolate || 0;
                 regression = _power(mergedData, extrapolate);
             } else if (regressionType == "logarithmic") {
-                var extrapolate = s.regressionSettings.extrapolate || 0;
+                let extrapolate = s.regressionSettings.extrapolate || 0;
                 regression = _logarithmic(mergedData, extrapolate);
             } else if (regressionType == "loess") {
                 var loessSmooth = s.regressionSettings.loessSmooth || 25;
@@ -165,7 +166,7 @@
     function _exponential(data, extrapolate) {
         var sum = [0, 0, 0, 0, 0, 0], n = 0, results = [];
 
-        for (len = data.length; n < len; n++) {
+        for (let len = data.length; n < len; n++) {
             if (data[n].x != null) {
                 data[n][0] = data[n].x;
                 data[n][1] = data[n].y;
@@ -187,12 +188,12 @@
         var resultLength = data.length + extrapolate;
         var step = data[data.length - 1][0] - data[data.length - 2][0];
 
-        for (var i = 0, len = resultLength; i < len; i++) {
-            var answer = 0;
+        for (let i = 0, len = resultLength; i < len; i++) {
+            let x;
             if(typeof data[i] !== 'undefined') {
-                var x = data[i][0];
+                x = data[i][0];
             } else {
-                var x = data[data.length - 1][0] + (i - data.length) * step;
+                x = data[data.length - 1][0] + (i - data.length) * step;
             }
 
             var coordinate = [x, A * Math.pow(Math.E, B * x)];
@@ -253,11 +254,11 @@
         var step = data[data.length - 1][0] - data[data.length - 2][0];
 
         for (var i = 0, len = resultLength; i < len; i++) {
-            var answer = 0;
+            let x;
             if(typeof data[i] !== 'undefined') {
-                var x = data[i][0];
+                x = data[i][0];
             } else {
-                var x = data[data.length - 1][0] + (i - data.length) * step;
+                x = data[data.length - 1][0] + (i - data.length) * step;
             }
 
             var coorY = x * gradient + intercept;
@@ -285,7 +286,7 @@
      *  Code extracted from https://github.com/Tom-Alexander/regression-js/
      */
     function _logarithmic(data, extrapolate) {
-        var sum = [0, 0, 0, 0], n = 0, results = [], mean = 0;
+        var sum = [0, 0, 0, 0], n = 0, results = [];
 
 
         for (len = data.length; n < len; n++) {
@@ -308,11 +309,11 @@
         var step = data[data.length - 1][0] - data[data.length - 2][0];
 
         for (var i = 0, len = resultLength; i < len; i++) {
-            var answer = 0;
+            let x;
             if(typeof data[i] !== 'undefined') {
-                var x = data[i][0];
+                x = data[i][0];
             } else {
-                var x = data[data.length - 1][0] + (i - data.length) * step;
+                x = data[data.length - 1][0] + (i - data.length) * step;
             }
 
             var coordinate = [x, A + B * Math.log(x)];
@@ -360,11 +361,11 @@
         var step = data[data.length - 1][0] - data[data.length - 2][0];
 
         for (var i = 0, len = resultLength; i < len; i++) {
-            var answer = 0;
+            let x;
             if(typeof data[i] !== 'undefined') {
-                var x = data[i][0];
+                x = data[i][0];
             } else {
-                var x = data[data.length - 1][0] + (i - data.length) * step;
+                x = data[data.length - 1][0] + (i - data.length) * step;
             }
 
             var coordinate = [x, A * Math.pow(x, B)];
@@ -409,9 +410,9 @@
             a = 0;
             var c = [];
             for (var j = 0; j < k; j++) {
-                for (var l = 0, len = data.length; l < len; l++) {
+                for (var _l = 0, _len = data.length; _l < _len; _l++) {
                     if (data[l][1]) {
-                        b += Math.pow(data[l][0], i + j);
+                        b += Math.pow(data[_l][0], i + j);
                     }
                 }
                 c.push(b);
@@ -425,7 +426,7 @@
 
         var resultLength = data.length + extrapolate;
         var step = data[data.length - 1][0] - data[data.length - 2][0];
-        for (var i = 0, len = resultLength; i < len; i++) {
+        for (var _i = 0, __len = resultLength; _i < __len; _i++) {
             var answer = 0;
             var x = 0;
             if (typeof data[i] !== 'undefined') {
@@ -452,7 +453,7 @@
 
         var string = 'y = ';
 
-        for (var i = equation.length - 1; i >= 0; i--) {
+        for (let i = equation.length - 1; i >= 0; i--) {
             if (i > 1) string += Math.round(equation[i] * 100) / 100 + 'x^' + i + ' + ';
             else if (i == 1) string += Math.round(equation[i] * 100) / 100 + 'x' + ' + ';
             else string += Math.round(equation[i] * 100) / 100;
@@ -629,7 +630,7 @@
         // Calc the coefficent of determination
         var SSE = 0;
         var SSYY = 0;
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i][1] != null) {
                 SSYY += Math.pow(data[i][1] - pred[i][1], 2);
                 SSE += Math.pow(data[i][1] - mean, 2);
