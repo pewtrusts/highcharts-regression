@@ -59,7 +59,7 @@
                 extraSerie.legendIndex = s.regressionSettings.legendIndex;
             }
 
-            var mergedData = s.data;
+            var mergedData = s.data.filter(d => d.y !== null);
             if (s.regressionSettings.useAllSeries) {
                 mergedData = [];
                 for (let di = 0; di < series.length; di++) {
