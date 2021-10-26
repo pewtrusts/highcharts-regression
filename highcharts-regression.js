@@ -167,16 +167,16 @@
         var sum = [0, 0, 0, 0, 0, 0], n = 0, results = [];
 
         for (let len = data.length; n < len; n++) {
-            if (data[n].x != null) {
+            if (data[n].x !== undefined) { 
                 data[n][0] = data[n].x;
                 data[n][1] = data[n].y;
             }
-            if (data[n][1] != null) {
+            if (data[n][1] !== null) { // != null 
                 sum[0] += data[n][0]; // X
                 sum[1] += data[n][1]; // Y
                 sum[2] += data[n][0] * data[n][0] * data[n][1]; // XXY
-                sum[3] += data[n][1] * Math.log(data[n][1]); // Y Log Y
-                sum[4] += data[n][0] * data[n][1] * Math.log(data[n][1]); //YY Log Y
+                sum[3] += data[n][1] === 0 ? 0 : data[n][1] * Math.log(data[n][1]); // Y Log Y
+                sum[4] += data[n][1] === 0 ? 0 : data[n][0] * data[n][1] * Math.log(data[n][1]); //YY Log Y
                 sum[5] += data[n][0] * data[n][1]; //XY
             }
         }
