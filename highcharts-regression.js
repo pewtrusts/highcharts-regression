@@ -1,4 +1,4 @@
-/* global define Highcharts series module */
+/* global define Highcharts series  */
 (function(factory) {
 	"use strict";
 
